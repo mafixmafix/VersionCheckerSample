@@ -176,7 +176,7 @@ public abstract class AppModule {
 ```
 
 *Note*:
-* Example is based on *Dagger2* DI Framework.
+* Sample is based on *Dagger2* DI Framework.
 * `VersionChecker` instance **MUST** be created in application scope.
 
 #### 3. Invoke `start` method in `onResume` method of your activity.
@@ -190,19 +190,20 @@ protected void onResume() {
 ```
 
 *Note*:
-* **DO NOT** invoke `start` method in any other place.
+* **DON'T** invoke `start` method in any other activity callbacks.(e.g.,`onCreate`)
+* You can invoke `start` method in multiple activities!
 
 #### 4. Enjoy!:smiley:
 
 *Note*:
-* see the sample for more information.
+* See the sample for more information.
 
 ## Dependencies
 
 * [Gson][Gson]
 * [Volley][Volley]
 
-**Note**: all dependencies will be removed in 1.x version.:wink:
+**Note**: All dependencies will be removed in 1.x version.:wink:
 
 ## R8 / ProGuard
 
@@ -214,7 +215,7 @@ Of course, Pull Requests are welcome.
 
 Here are the few rules we'd like you to respect if you do so:
 
-* Only edit the code related to the suggested change, so DON'T automatically format the classes you've edited.
+* Only edit the code related to the suggested change, so **DON'T** automatically format the classes you've edited.
 * Use IntelliJ default formatting rules.
 * Regarding licensing:
   * You must be the original author of the code you suggest.
