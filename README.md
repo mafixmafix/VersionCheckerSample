@@ -1,6 +1,6 @@
 # VersionChecker
 
-A small, fast, efficient and flexible open source library that checks for your apps' updates on your own server.
+A small, fast, efficient and flexible open source library that checks for your apps' updates from REST APIs.
 
 ## Documentation
 
@@ -50,8 +50,132 @@ dependencies {
 
 ## Usage
 
+#### 1. Create *POJO* class from *JSON* response.
 
-## ProGuard / R8
+   *JSON* response:
+   ```json
+   {
+       "data": {
+           "id": 2,
+           "first_name": "Janet",
+           "last_name": "Weaver",
+           "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
+       }
+   }
+   ```
+   
+   *POJO* class:
+   ```java
+   public class ResultModel {
+       Data data;
+   
+       public Data getData() {
+           return data;
+       }
+   
+       public void setData(Data data) {
+           this.data = data;
+       }
+   
+       @NonNull
+       @Override
+       public String toString() {
+           return data.toString();
+       }
+   
+       public static class Data {
+           Integer id;
+           String first_name;
+           String last_name;
+           String avatar;
+   
+           public Integer getId() {
+               return id;
+           }
+   
+           public void setId(Integer id) {
+               this.id = id;
+           }
+   
+           public String getFirst_name() {
+               return first_name;
+           }
+   
+           public void setFirst_name(String first_name) {
+               this.first_name = first_name;
+           }
+   
+           public String getLast_name() {
+               return last_name;
+           }
+   
+           public void setLast_name(String last_name) {
+               this.last_name = last_name;
+           }
+   
+           public String getAvatar() {
+               return avatar;
+           }
+   
+           public void setAvatar(String avatar) {
+               this.avatar = avatar;
+           }
+       }
+   }
+   ```
+   
+   *Note*:
+   
+   * [reqres][reqres] used for fake REST-API.
+   * You can use [jsonschema2pojo][jsonschema2pojo] for model *JSON* to *POJO*
+    
+#### 2. Create `VersionChecker` instance.
+    
+    ```java
+        @Provides
+    static VersionChecker provideVersionChecker(VersionCheckerClient versionCheckerClient) {
+        return VersionChecker.Builder.getInstance()
+                .versionCheckerClient(versionCheckerClient)
+                .build();
+    }
+
+    @Provides
+    static VersionCheckerClient provideVersionCheckerClient(Context context, Condition<ResultModel> condition) {
+        return VersionCheckerClient
+                .Builder
+                .getInstance()
+                .appContext(context)
+                .condition(condition)
+                .result(ResultModel.class)
+                .url("https://reqres.in/api/users/2") // Fake REST_API :)
+                .build();
+    }
+
+    @Provides
+    static Condition<ResultModel> provideCondition() {
+        return new Condition<ResultModel>() {
+
+            @Override
+            public void whatHappen(IVersion<ResultModel> version) {
+                if (version.getNetworkInfo().isConnected() && version.getTag().equals(MainActivity.TAG)) {
+                    if (version.getResult() != null) {
+                        Log.d("VersionChecker", version.getResult().toString());
+                        ((MainActivity) version.getActivity()).openDialogFragment();
+                    }
+                }
+            }
+        };
+    }
+    ```
+
+## Dependencies
+
+* [Gson][Gson]
+* [Volley][Volley]
+
+**Note**: all dependencies will be removed in 1.x version.:wink:
+
+## R8 / ProGuard
 
 Will be added as soon as possible!
 
@@ -82,3 +206,11 @@ Here are the few rules we'd like you to respect if you do so:
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+test line 1.
+> test line 2.
+>> test line 3.
+[Gson]: https://github.com/google/gson
+[volley]: https://github.com/google/volley
+[reqres]: https://reqres.in/
+[jsonschema2pojo]: http://www.jsonschema2pojo.org/
