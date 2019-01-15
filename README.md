@@ -52,87 +52,90 @@ dependencies {
 
 #### 1. Create *POJO* class from *JSON* response.
 
-   *JSON* response:
-   ```json
-   {
-       "data": {
-           "id": 2,
-           "first_name": "Janet",
-           "last_name": "Weaver",
-           "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
-       }
-   }
-   ```
-   
-   *POJO* class:
-   ```java
-   public class ResultModel {
-       Data data;
-   
-       public Data getData() {
-           return data;
-       }
-   
-       public void setData(Data data) {
-           this.data = data;
-       }
-   
-       @NonNull
-       @Override
-       public String toString() {
-           return data.toString();
-       }
-   
-       public static class Data {
-           Integer id;
-           String first_name;
-           String last_name;
-           String avatar;
-   
-           public Integer getId() {
-               return id;
-           }
-   
-           public void setId(Integer id) {
-               this.id = id;
-           }
-   
-           public String getFirst_name() {
-               return first_name;
-           }
-   
-           public void setFirst_name(String first_name) {
-               this.first_name = first_name;
-           }
-   
-           public String getLast_name() {
-               return last_name;
-           }
-   
-           public void setLast_name(String last_name) {
-               this.last_name = last_name;
-           }
-   
-           public String getAvatar() {
-               return avatar;
-           }
-   
-           public void setAvatar(String avatar) {
-               this.avatar = avatar;
-           }
-       }
-   }
-   ```
-   
-   *Note*:
-   
-   * [reqres][reqres] used for fake REST-API.
-   * You can use [jsonschema2pojo][jsonschema2pojo] for model *JSON* to *POJO*
+*JSON* response:
+```json
+{
+    "data": {
+        "id": 2,
+        "first_name": "Janet",
+        "last_name": "Weaver",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
+    }
+}
+```
+
+*POJO* class:
+```java
+public class ResultModel {
+    Data data;
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return data.toString();
+    }
+
+    public static class Data {
+        Integer id;
+        String first_name;
+        String last_name;
+        String avatar;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getFirst_name() {
+            return first_name;
+        }
+
+        public void setFirst_name(String first_name) {
+            this.first_name = first_name;
+        }
+
+        public String getLast_name() {
+            return last_name;
+        }
+
+        public void setLast_name(String last_name) {
+            this.last_name = last_name;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+    }
+}
+```
+
+*Note*:
+
+* [reqres][reqres] used for fake REST-API.
+* You can use [jsonschema2pojo][jsonschema2pojo] for model *JSON* to *POJO*
     
-#### 2. Create `VersionChecker` instance.
+#### 2. Create `VersionChecker` instance in AppModule.
     
-    ```java
-        @Provides
+```java
+@Module
+public abstract class AppModule {
+
+    @Provides
     static VersionChecker provideVersionChecker(VersionCheckerClient versionCheckerClient) {
         return VersionChecker.Builder.getInstance()
                 .versionCheckerClient(versionCheckerClient)
@@ -166,7 +169,37 @@ dependencies {
             }
         };
     }
-    ```
+
+    @Singleton
+    @Binds
+    abstract Context bindContext(App app);
+}
+```
+
+*Note*:
+
+* Example is based on *Dagger2* DI Framework.
+* `VersionChecker` instance **MUST** be created in application scope.
+
+#### 3. Invoke `start` method in `onResume` method of your activity.
+
+```java
+@Override
+protected void onResume() {
+    super.onResume();
+    versionChecker.start(this, TAG);
+}
+```
+
+*Note*:
+
+* **DO NOT** invoke `start` method in any other place.
+
+#### 4. Enjoy, it's done!
+
+*Note*:
+
+* see the example for more information.
 
 ## Dependencies
 
@@ -207,9 +240,6 @@ Here are the few rules we'd like you to respect if you do so:
     See the License for the specific language governing permissions and
     limitations under the License.
 
-test line 1.
-> test line 2.
->> test line 3.
 [Gson]: https://github.com/google/gson
 [volley]: https://github.com/google/volley
 [reqres]: https://reqres.in/
