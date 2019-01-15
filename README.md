@@ -219,7 +219,7 @@ Here are the few rules we'd like you to respect if you do so:
 * Use IntelliJ default formatting rules.
 * Regarding licensing:
   * You must be the original author of the code you suggest.
-  * You must give the copyright to "the VersionChecker Project"
+  * You must give the copyright to the **VersionChecker** Project.
 
 ## License
 
