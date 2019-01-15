@@ -46,7 +46,7 @@ dependencies {
 <dependency org='tk.pallas.versionchecker' name='version-checker' rev='0.1.0'/>
 ```
 
-**Note**: library is available **JUST** on JCenter.
+**Note**: library is available **ONLY** on JCenter.
 
 ## Usage
 
