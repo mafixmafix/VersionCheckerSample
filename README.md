@@ -125,7 +125,6 @@ public class ResultModel {
 ```
 
 *Note*:
-
 * [reqres][reqres] used for fake REST-API.
 * You can use [jsonschema2pojo][jsonschema2pojo] for model *JSON* to *POJO*
     
@@ -177,7 +176,6 @@ public abstract class AppModule {
 ```
 
 *Note*:
-
 * Example is based on *Dagger2* DI Framework.
 * `VersionChecker` instance **MUST** be created in application scope.
 
@@ -192,14 +190,12 @@ protected void onResume() {
 ```
 
 *Note*:
-
 * **DO NOT** invoke `start` method in any other place.
 
-#### 4. Enjoy, it's done!
+#### 4. Enjoy!:smiley:
 
 *Note*:
-
-* see the example for more information.
+* see the sample for more information.
 
 ## Dependencies
 
