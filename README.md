@@ -1,6 +1,6 @@
 # VersionChecker
 
-A small, fast, efficient and flexible open source library that checks for your apps' updates from REST APIs.
+A small, fast, efficient and flexible open source library that checks for your app updates from REST APIs.
 
 ## Documentation
 
